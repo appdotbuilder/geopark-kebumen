@@ -1,8 +1,19 @@
 
+import { db } from '../db';
+import { mediaGalleryTable } from '../db/schema';
 import { type MediaGallery } from '../schema';
+import { desc } from 'drizzle-orm';
 
 export const getMediaGallery = async (): Promise<MediaGallery[]> => {
-  // This is a placeholder declaration! Real code should be implemented here.
-  // The goal of this handler is fetching all media items from the gallery.
-  return [];
+  try {
+    const results = await db.select()
+      .from(mediaGalleryTable)
+      .orderBy(desc(mediaGalleryTable.created_at))
+      .execute();
+
+    return results;
+  } catch (error) {
+    console.error('Failed to fetch media gallery:', error);
+    throw error;
+  }
 };
